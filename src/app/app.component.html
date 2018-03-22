@@ -1,0 +1,107 @@
+<div class="col-md-12 col-md-offset-3 box">
+<div>
+        <mat-toolbar color="primary">
+              
+                    <i class="material-icons">build</i> <span><h1>Settings</h1></span>
+                
+                </mat-toolbar>          
+</div>
+
+  <form [formGroup]="settingFormGroup" (ngSubmit)="onSubmit()" *ngIf="showForm">
+    
+    <div>
+    <mat-accordion>
+    <div  *ngFor="let k of objkey(jsondata['components'])">
+      
+            <mat-expansion-panel>
+                <mat-expansion-panel-header >
+                    <mat-panel-title name="jsondata['components'][k]['title']">
+                            {{jsondata['components'][k]['title']}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            <mat-grid-list cols="3" rowHeight="3:1">      
+        <div *ngFor="let f of jsondata['components'][k]['fields'];">
+                <mat-grid-tile>   
+            <div [ngSwitch]="f.type">
+                        
+                    <div *ngSwitchCase="'string'">
+                        <mat-form-field>
+                            <input matInput type="text"  [formControlName]="k+'--'+f.name"
+                            [placeholder]="f.title" [required]="f.required">
+                            <mat-error *ngIf="settingFormGroup.controls[k+'--'+f.name].hasError('required')">
+                                 {{f.title}}  is required
+                            </mat-error>  
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngSwitchCase="'password'">
+                        <mat-form-field>
+                            <input matInput type="password" [formControlName]="k+'--'+f.name"
+                            [placeholder]="f.title" [required]="f.required">
+                            <mat-error *ngIf="settingFormGroup.controls[k+'--'+f.name].hasError('required')">
+                                    {{f.title}}  is required
+                            </mat-error>   
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngSwitchCase="'integer'">
+                        <mat-form-field>
+                            <input matInput type="number" [formControlName]="k+'--'+f.name"
+                            [placeholder]="f.title" [required]="f.required"> 
+                            <mat-error *ngIf="settingFormGroup.controls[k+'--'+f.name].hasError('required')">
+                                    {{f.title}}  is required
+                            </mat-error>   
+                        </mat-form-field>
+                    </div>
+
+                    <div *ngSwitchCase="'dropdown'">
+                        <mat-form-field>
+                            <mat-select [formControlName]="k+'--'+f.name" [required]="f.required">
+                                <mat-option *ngFor="let opt of f.options" [value]="objkey(opt)[0]">
+                                 
+                                    {{opt[objkey(opt)]}}
+                                 
+                                </mat-option>
+                            </mat-select>
+                            <mat-error *ngIf="settingFormGroup.controls[k+'--'+f.name].hasError('required')">
+                                    {{f.title}}  is required
+                            </mat-error>  
+                        </mat-form-field>
+                    </div>
+
+                </div>
+            </mat-grid-tile>
+            </div>
+        </mat-grid-list>
+        </mat-expansion-panel>  
+        </div>  
+        <button type="submit" class="save" mat-button color="primary">Save</button>   
+    </mat-accordion>   
+    </div> 
+</form>
+</div>
+<!-- <hr>
+{{settingFormGroup.value | json}} -->
+<!-- <form>    
+    <mat-grid-list cols="3" rowHeight="2:1">
+        <div>    
+            <div>
+        <mat-grid-tile>
+            <mat-form-field>
+                <input matInput type="text" placeholder="hello" >
+        </mat-form-field>
+    </mat-grid-tile>   
+</div>
+<div>
+       <mat-grid-tile><input matInput type="text" placeholder="hello" ></mat-grid-tile>
+       </div>
+        <mat-grid-tile>
+                <mat-form-field>
+                    <input matInput type="text" placeholder="hello" >
+                </mat-form-field>
+                </mat-grid-tile>
+        <mat-grid-tile><input matInput type="text" placeholder="hello" ></mat-grid-tile>
+    </div>
+      </mat-grid-list>
+     
+    </form> -->
